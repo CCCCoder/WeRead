@@ -31,4 +31,8 @@ dependencies {
 
     //字体
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
+    //日志
+    implementation 'com.orhanobut:logger:2.2.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    compile "io.reactivex.rxjava2:rxjava:2.1.13"
 }

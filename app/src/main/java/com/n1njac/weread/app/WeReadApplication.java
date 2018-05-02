@@ -7,6 +7,8 @@ package com.n1njac.weread.app;
 import android.app.Application;
 
 import com.n1njac.weread.R;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -15,6 +17,11 @@ public class WeReadApplication extends Application {
     public void onCreate() {
         super.onCreate();
         initTypeface();
+        initLogger();
+    }
+
+    private void initLogger() {
+        Logger.addLogAdapter(new AndroidLogAdapter());
     }
 
     //初始化字体
