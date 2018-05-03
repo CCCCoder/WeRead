@@ -9,7 +9,7 @@ import android.os.Parcelable;
 
 import java.util.List;
 
-public class MainItem implements Parcelable {
+public class DetailEntity implements Parcelable {
 
     /**
      * status : ok
@@ -23,21 +23,21 @@ public class MainItem implements Parcelable {
     private String msg;
     private int code;
 
-    protected MainItem(Parcel in) {
+    protected DetailEntity(Parcel in) {
         status = in.readString();
         msg = in.readString();
         code = in.readInt();
     }
 
-    public static final Creator<MainItem> CREATOR = new Creator<MainItem>() {
+    public static final Creator<DetailEntity> CREATOR = new Creator<DetailEntity>() {
         @Override
-        public MainItem createFromParcel(Parcel in) {
-            return new MainItem(in);
+        public DetailEntity createFromParcel(Parcel in) {
+            return new DetailEntity(in);
         }
 
         @Override
-        public MainItem[] newArray(int size) {
-            return new MainItem[size];
+        public DetailEntity[] newArray(int size) {
+            return new DetailEntity[size];
         }
     };
 

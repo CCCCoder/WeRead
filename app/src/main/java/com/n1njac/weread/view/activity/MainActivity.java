@@ -9,9 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.n1njac.weread.R;
-import com.n1njac.weread.model.entity.MainItem;
+import com.n1njac.weread.model.entity.DetailEntity;
 import com.n1njac.weread.presenter.MainContract;
-import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void refreshMainList(List<MainItem> items) {
+    public void refreshMainList(List<DetailEntity> items) {
 
     }
 }
