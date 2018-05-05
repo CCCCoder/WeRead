@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WeRead</string>
+    <string name="str_main_topbar">单 读</string>
 </resources>

@@ -11,15 +11,23 @@ import android.support.v7.app.AppCompatActivity;
 import com.n1njac.weread.R;
 import com.n1njac.weread.model.entity.DetailEntity;
 import com.n1njac.weread.presenter.MainContract;
+import com.n1njac.weread.view.widget.VerticalViewPager;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements MainContract.View {
+    @BindView(R.id.main_vvp)
+    VerticalViewPager mainVvp;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ButterKnife.bind(this);
+        
     }
 
     @Override
