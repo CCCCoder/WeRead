@@ -12,21 +12,28 @@ import android.view.View;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.n1njac.weread.R;
 import com.n1njac.weread.model.entity.DetailEntity;
+import com.n1njac.weread.model.entity.Event;
 import com.n1njac.weread.presenter.MainContract;
+import com.n1njac.weread.utils.RxBus;
 import com.n1njac.weread.view.fragment.LeftMenuFragment;
 import com.n1njac.weread.view.fragment.RightMenuFragment;
 import com.n1njac.weread.view.widget.VerticalViewPager;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscription;
+import rx.functions.Action1;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
+
     @BindView(R.id.main_vvp)
     VerticalViewPager mainVvp;
     private SlidingMenu mSlidingMenu;
+    private Subscription mSubscription;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         ButterKnife.bind(this);
         initMenu();
         initViewPager();
+        Logger.d("onCreate");
     }
 
     private void initMenu() {
@@ -48,6 +56,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         getSupportFragmentManager().beginTransaction().add(R.id.left_menu_ll, new LeftMenuFragment()).commit();
         mSlidingMenu.setSecondaryMenu(R.layout.container_right_menu);
         getSupportFragmentManager().beginTransaction().add(R.id.right_menu_ll, new RightMenuFragment()).commit();
+        mSubscription = RxBus.getInstance().toObservable(Event.class).subscribe(new Action1<Event>() {
+            @Override
+            public void call(Event event) {
+                mSlidingMenu.showContent();
+            }
+        });
+
     }
 
     private void initViewPager() {
