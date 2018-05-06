@@ -5,4 +5,11 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="color_white">#fff</color>
+    <color name="color_theme_bg">#fff8f7f5</color>
+
+    <color name="color_line">#ffcead53</color>
+
+    <color name="color_page_fragment__cus">#ff000000</color>
+    <color name="color_page_fragment__text_common">#ff000000</color>
+    <color name="color_page_fragment_view_line_bg_common">#ffc0c0c0</color>
 </resources>

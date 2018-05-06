@@ -8,13 +8,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.n1njac.weread.R;
+
+import com.n1njac.weread.app.WeReadApplication;
+import com.n1njac.weread.di.components.DaggerMainComponent;
+import com.n1njac.weread.di.modules.MainModule;
 import com.n1njac.weread.model.entity.DetailEntity;
 import com.n1njac.weread.model.entity.Event;
 import com.n1njac.weread.presenter.MainContract;
+import com.n1njac.weread.presenter.MainPresenter;
 import com.n1njac.weread.utils.RxBus;
+import com.n1njac.weread.view.adapter.VerticalPagerAdapter;
 import com.n1njac.weread.view.fragment.LeftMenuFragment;
 import com.n1njac.weread.view.fragment.RightMenuFragment;
 import com.n1njac.weread.view.widget.VerticalViewPager;
@@ -22,18 +29,25 @@ import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
 import rx.functions.Action1;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View {
+public class MainActivity extends BaseActivity implements MainContract.View {
 
     @BindView(R.id.main_vvp)
     VerticalViewPager mainVvp;
     private SlidingMenu mSlidingMenu;
     private Subscription mSubscription;
+    private long mLastClickTime;
+    private VerticalPagerAdapter mPagerAdapter;
+
+    @Inject
+    MainPresenter mPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,10 +76,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 mSlidingMenu.showContent();
             }
         });
-
     }
 
     private void initViewPager() {
+        mPagerAdapter = new VerticalPagerAdapter(getSupportFragmentManager());
+        DaggerMainComponent.builder()
+                .mainModule(new MainModule(this))
+                .netComponent(WeReadApplication.get(this).getNetComponent())
+                .build()
+                .inject(this);
 
     }
 
@@ -113,6 +132,28 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             case R.id.go_to_person_iv:
                 mSlidingMenu.showSecondaryMenu();
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mSlidingMenu.isMenuShowing() || mSlidingMenu.isSecondaryMenuShowing()) {
+            mSlidingMenu.showContent();
+        } else {
+            if (System.currentTimeMillis() - mLastClickTime < 2000L) {
+                super.onBackPressed();
+            } else {
+                mLastClickTime = System.currentTimeMillis();
+                Toast.makeText(this, "再按一次返回键退出", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
         }
     }
 }
