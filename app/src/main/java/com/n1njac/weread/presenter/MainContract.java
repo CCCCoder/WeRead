@@ -4,6 +4,7 @@ package com.n1njac.weread.presenter;
  *    email:aiai173cc@gmail.com 
  */
 
+import com.n1njac.weread.model.entity.CategoryListEntity;
 import com.n1njac.weread.model.entity.DetailEntity;
 
 import java.util.List;
@@ -28,6 +29,6 @@ public interface MainContract {
 
         void showLunar();
 
-        void refreshMainList(List<DetailEntity> items);
+        void refreshMainList(List<CategoryListEntity.DatasBean> items);
     }
 }

@@ -12,6 +12,7 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
+
 public interface ApiService {
 
     /**
@@ -65,7 +66,7 @@ public interface ApiService {
     Observable<CategoryListEntity> getCategoryListData(@Query("c") String c,
                                                        @Query("a") String a,
                                                        @Query("p") int page,
-                                                       @Query("model") String model,
+                                                       @Query("model") int model,
                                                        @Query("page_id") String pageId,
                                                        @Query("create_time") String create_time,
                                                        @Query("client") String client,
