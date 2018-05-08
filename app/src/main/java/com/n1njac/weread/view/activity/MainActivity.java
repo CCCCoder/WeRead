@@ -6,24 +6,32 @@ package com.n1njac.weread.view.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.n1njac.weread.R;
 
+import com.n1njac.weread.app.GlideApp;
 import com.n1njac.weread.app.WeReadApplication;
 import com.n1njac.weread.di.components.DaggerMainComponent;
 import com.n1njac.weread.di.modules.MainModule;
+import com.n1njac.weread.model.api.StringConvert;
+import com.n1njac.weread.model.entity.CategoryListEntity;
 import com.n1njac.weread.model.entity.DetailEntity;
 import com.n1njac.weread.model.entity.Event;
 import com.n1njac.weread.presenter.MainContract;
 import com.n1njac.weread.presenter.MainPresenter;
+import com.n1njac.weread.utils.AppUtils;
 import com.n1njac.weread.utils.RxBus;
 import com.n1njac.weread.view.adapter.VerticalPagerAdapter;
 import com.n1njac.weread.view.fragment.LeftMenuFragment;
 import com.n1njac.weread.view.fragment.RightMenuFragment;
+import com.n1njac.weread.view.widget.LunarDialog;
 import com.n1njac.weread.view.widget.VerticalViewPager;
 import com.orhanobut.logger.Logger;
 
@@ -45,9 +53,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     private Subscription mSubscription;
     private long mLastClickTime;
     private VerticalPagerAdapter mPagerAdapter;
+    private String mDeviceId;
 
     @Inject
     MainPresenter mPresenter;
+    private int mPage = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,8 +66,10 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         ButterKnife.bind(this);
         initMenu();
         initViewPager();
-        Logger.d("onCreate");
+        getDeviceId();
+        loadData(mPage, 0, "0", "0");
     }
+
 
     private void initMenu() {
         mSlidingMenu = new SlidingMenu(this);
@@ -86,7 +98,28 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                 .build()
                 .inject(this);
 
+        mainVvp.setAdapter(mPagerAdapter);
+        mainVvp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                if (mPagerAdapter.getCount() <= position + 2) {
+                    loadData(mPage, 0, mPagerAdapter.getLastItemId(), mPagerAdapter.getLastItemCreateTime());
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
+
 
     @Override
     public void showLoading() {
@@ -114,13 +147,28 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     }
 
     @Override
-    public void showLunar() {
-
+    public void showLunar(String thumbnailPath) {
+        LunarDialog dialog = new LunarDialog(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_lunar, null, false);
+        ImageView lunarIv = view.findViewById(R.id.lunar_iv);
+        GlideApp.with(this).load(thumbnailPath).into(lunarIv);
+        dialog.setContentView(view);
+        dialog.show();
     }
 
     @Override
-    public void refreshMainList(List<DetailEntity> items) {
+    public void refreshMainList(List<CategoryListEntity.DatasBean> items) {
+        mPage++;
+        mPagerAdapter.setDataList(items);
+    }
 
+
+    private void loadData(int page, int mode, String pageId, String createTime) {
+        mPresenter.getListByPage(page, mode, pageId, mDeviceId, createTime);
+    }
+
+    private void getDeviceId() {
+        mDeviceId = AppUtils.getDeviceId(this);
     }
 
     @OnClick({R.id.go_to_column_iv, R.id.go_to_person_iv})

@@ -4,6 +4,9 @@ package com.n1njac.weread.presenter;
  *    email:aiai173cc@gmail.com 
  */
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.n1njac.weread.model.api.ApiService;
 import com.n1njac.weread.model.entity.CategoryListEntity;
 import com.n1njac.weread.utils.TimeUtils;
@@ -59,12 +62,39 @@ public class MainPresenter implements MainContract.Presenter {
 
                     }
                 });
-
-
     }
 
     @Override
     public void getRecommend(String deviceId) {
+        mApiService.getRecommendData("home", "Api", "getLunar", "android", deviceId, deviceId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        String key = TimeUtils.getCurrentData("yyyyMMdd");
+                        JsonParser jsonParser = new JsonParser();
+                        JsonElement je = jsonParser.parse(s);
+                        JsonObject jsonObject = je.getAsJsonObject().getAsJsonObject("datas").getAsJsonObject(key);
+                        mView.showLunar(jsonObject.get("thumbnail").getAsString());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
 
     }
 }

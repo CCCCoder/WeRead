@@ -27,7 +27,7 @@ public interface MainContract {
 
         void showOnFailure();
 
-        void showLunar();
+        void showLunar(String thumbnailPath);
 
         void refreshMainList(List<CategoryListEntity.DatasBean> items);
     }
