@@ -144,9 +144,7 @@ public class MainFragment extends Fragment {
 
     private void mainPageClick() {
         if (mDatasBean != null) {
-            Intent intent = new Intent(getActivity(), DetailActivity.class);
-            intent.putExtra(KeyUtilsKt.FRAGMENT_TO_DETAIL_ACTIVITY_DATA, mDatasBean);
-            startActivity(intent);
+            DetailActivity.startDetailAty(getActivity(), mDatasBean);
         }
     }
 
