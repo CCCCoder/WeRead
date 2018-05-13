@@ -59,7 +59,7 @@ public class DetailActivity extends BaseActivity {
     Toolbar detailTb;
 
     public static void startDetailAty(Context this$, CategoryListEntity.DatasBean dataBean) {
-        Intent i = new Intent();
+        Intent i = new Intent(this$, DetailActivity.class);
         i.putExtra(KeyUtilsKt.FRAGMENT_TO_DETAIL_ACTIVITY_DATA, dataBean);
         this$.startActivity(i);
     }

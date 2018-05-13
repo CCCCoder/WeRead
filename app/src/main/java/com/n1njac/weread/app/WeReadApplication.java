@@ -52,7 +52,7 @@ public class WeReadApplication extends Application {
     //初始化字体
     private void initTypeface() {
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
+                .setDefaultFontPath("fonts/PMingLiU.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build());
     }

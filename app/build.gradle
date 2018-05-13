@@ -56,9 +56,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 
-    compile 'com.google.dagger:dagger:2.15'
+    implementation 'com.google.dagger:dagger:2.15'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
-    compile 'com.google.dagger:dagger-android-support:2.15'
+    implementation 'com.google.dagger:dagger-android-support:2.15'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.15'
 
 
@@ -67,10 +67,8 @@ dependencies {
     implementation 'net.danlew:android.joda:2.9.3'
     implementation 'com.github.ksoichiro:android-observablescrollview:1.6.0'
 
-    implementation("com.github.hotchemi:permissionsdispatcher:$permissionsdispatcher_version") {
+    implementation("com.github.hotchemi:permissionsdispatcher:3.1.0") {
         exclude module: "support-v13"
     }
-    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$permissionsdispatcher_version"
-    compile('com.github.hotchemi:permissionsdispatcher:3.1.0') { exclude module: 'support-v13' }
-    kapt 'com.github.hotchemi:permissionsdispatcher-processor:3.1.0'
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.1.0"
 }

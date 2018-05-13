@@ -1,8 +1,10 @@
 package com.n1njac.weread.presenter;
-/*    
+/*
  *    Created by N1njaC on 2018/5/2.
- *    email:aiai173cc@gmail.com 
+ *    email:aiai173cc@gmail.com
  */
+
+import android.util.Log;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -10,6 +12,8 @@ import com.google.gson.JsonParser;
 import com.n1njac.weread.model.api.ApiService;
 import com.n1njac.weread.model.entity.CategoryListEntity;
 import com.n1njac.weread.utils.TimeUtils;
+
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
@@ -74,11 +78,12 @@ public class MainPresenter implements MainContract.Presenter {
                 .subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        Log.d("XYZ", "onSubscribe ");
                     }
 
                     @Override
                     public void onNext(String s) {
+                        Log.d("XYZ", "onNext " + s);
                         String key = TimeUtils.getCurrentData("yyyyMMdd");
                         JsonParser jsonParser = new JsonParser();
                         JsonElement je = jsonParser.parse(s);
@@ -88,12 +93,12 @@ public class MainPresenter implements MainContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.d("XYZ", "onError " + e.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
-
+                        Log.d("XYZ", "onComplete ");
                     }
                 });
 

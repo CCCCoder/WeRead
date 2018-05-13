@@ -43,8 +43,8 @@ public class NetModule {
         return new Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(ConstansKt.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(EntityUtils.gson))
                 .addConverterFactory(StringConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(EntityUtils.gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }

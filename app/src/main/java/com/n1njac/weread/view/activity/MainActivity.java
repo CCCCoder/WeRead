@@ -20,8 +20,10 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.n1njac.weread.R;
 
 
+import com.n1njac.weread.app.GlideApp;
 import com.n1njac.weread.app.WeReadApplication;
 
+import com.n1njac.weread.di.components.DaggerMainComponent;
 import com.n1njac.weread.di.modules.MainModule;
 import com.n1njac.weread.model.api.StringConvert;
 import com.n1njac.weread.model.entity.CategoryListEntity;
@@ -30,14 +32,15 @@ import com.n1njac.weread.model.entity.Event;
 import com.n1njac.weread.presenter.MainContract;
 import com.n1njac.weread.presenter.MainPresenter;
 import com.n1njac.weread.utils.AppUtils;
+import com.n1njac.weread.utils.PreferenceUtils;
 import com.n1njac.weread.utils.RxBus;
+import com.n1njac.weread.utils.TimeUtils;
 import com.n1njac.weread.view.adapter.VerticalPagerAdapter;
 import com.n1njac.weread.view.fragment.LeftMenuFragment;
 import com.n1njac.weread.view.fragment.RightMenuFragment;
 import com.n1njac.weread.view.widget.LunarDialog;
 import com.n1njac.weread.view.widget.VerticalViewPager;
 import com.orhanobut.logger.Logger;
-
 
 
 import java.util.List;
@@ -75,8 +78,19 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         initViewPager();
 //        getDeviceId();
         loadData(mPage, 0, "0", "0");
+        initLunar();
     }
 
+    private void initLunar() {
+        String current_day = (String) PreferenceUtils.INSTANCE.getSP("current_day", "", this);
+        if (!TimeUtils.getCurrentData("yyyyMMdd").equals(current_day)){
+            loadRecommendData();
+        }
+    }
+
+    private void loadRecommendData() {
+        mPresenter.getRecommend(mDeviceId);
+    }
 
     @SuppressLint("CheckResult")
     private void initMenu() {
@@ -102,7 +116,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     private void initViewPager() {
         mPagerAdapter = new VerticalPagerAdapter(getSupportFragmentManager());
-        DaggereMainComponent.builder()
+        DaggerMainComponent.builder()
                 .mainModule(new MainModule(this))
                 .netComponent(WeReadApplication.get(this).getNetComponent())
                 .build()
@@ -158,6 +172,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     public void showLunar(String thumbnailPath) {
+        Logger.d(thumbnailPath);
+        PreferenceUtils.INSTANCE.putSP("current_day", TimeUtils.getCurrentData("yyyyMMdd"), this);
         LunarDialog dialog = new LunarDialog(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_lunar, null, false);
         ImageView lunarIv = view.findViewById(R.id.lunar_iv);
@@ -219,7 +235,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
 }
