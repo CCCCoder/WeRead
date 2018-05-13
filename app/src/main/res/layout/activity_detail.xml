@@ -1,20 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-   <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
+    <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-       <FrameLayout
-           android:id="@+id/fragment_container_fl"
-           android:layout_width="match_parent"
-           android:layout_height="190dp">
-       </FrameLayout>
-       
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/parallax_image_height">
+
+                <ImageView
+                    android:id="@+id/detail_content_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/detail_type_listen_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/layout_progress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#33000000"
+                        android:gravity="center_vertical"
+                        android:minHeight="44dp">
+
+                        <TextView
+                            android:id="@+id/progress_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:text="00：00"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                        <android.support.v7.widget.AppCompatSeekBar
+                            android:id="@+id/seek_bar_sb"
+                            style="@style/Widget.AppCompat.SeekBar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:max="10000" />
+
+                        <TextView
+                            android:id="@+id/duration_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:text="03：00"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/detail_play_ic"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_play" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/detail_type_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="音频"
+                    android:textColor="@color/color_line" />
+
+                <TextView
+                    android:id="@+id/detail_date_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="15dp"
+                    android:text="2018/05/07"
+                    android:textColor="@color/color_page_fragment__cus" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/detail_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="忧伤的嫖客"
+                android:textColor="@color/color_page_fragment__cus"
+                android:textSize="24sp"
+                android:typeface="serif" />
+
+            <TextView
+                android:id="@+id/detail_author_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="林阿P"
+                android:textColor="@color/color_page_fragment__cus"
+                android:textSize="11sp"
+                tools:ignore="SmallSp" />
+
+            <TextView
+                android:id="@+id/detail_leader_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P"
+                android:textColor="@color/color_page_fragment__cus"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/item_column_page_textcolor_author" />
+
+            <LinearLayout
+                android:id="@+id/news_parse_web_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10.0dip"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:visibility="visible" />
+
+            <WebView
+                android:id="@+id/content_wv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
 
 
-   </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/detail_tb"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorPrimary"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|end"
+            android:orientation="horizontal"
+            tools:ignore="ContentDescription">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/favorite_normal" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:src="@mipmap/write" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="20dp"
+                android:src="@mipmap/share" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
 
 </FrameLayout>

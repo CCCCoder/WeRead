@@ -1,10 +1,13 @@
 package com.n1njac.weread.view.activity;
-/*    
+/*
  *    Created by N1njaC on 2018/5/2.
- *    email:aiai173cc@gmail.com 
+ *    email:aiai173cc@gmail.com
  */
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,9 +19,9 @@ import android.widget.Toast;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.n1njac.weread.R;
 
-import com.n1njac.weread.app.GlideApp;
+
 import com.n1njac.weread.app.WeReadApplication;
-import com.n1njac.weread.di.components.DaggerMainComponent;
+
 import com.n1njac.weread.di.modules.MainModule;
 import com.n1njac.weread.model.api.StringConvert;
 import com.n1njac.weread.model.entity.CategoryListEntity;
@@ -35,6 +38,8 @@ import com.n1njac.weread.view.widget.LunarDialog;
 import com.n1njac.weread.view.widget.VerticalViewPager;
 import com.orhanobut.logger.Logger;
 
+
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -42,15 +47,16 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Subscription;
-import rx.functions.Action1;
+import io.reactivex.functions.Consumer;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class MainActivity extends BaseActivity implements MainContract.View {
 
     @BindView(R.id.main_vvp)
     VerticalViewPager mainVvp;
     private SlidingMenu mSlidingMenu;
-    private Subscription mSubscription;
     private long mLastClickTime;
     private VerticalPagerAdapter mPagerAdapter;
     private String mDeviceId;
@@ -64,13 +70,15 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        MainActivityPermissionsDispatcher.getDeviceIdWithPermissionCheck(this);
         initMenu();
         initViewPager();
-        getDeviceId();
+//        getDeviceId();
         loadData(mPage, 0, "0", "0");
     }
 
 
+    @SuppressLint("CheckResult")
     private void initMenu() {
         mSlidingMenu = new SlidingMenu(this);
         mSlidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
@@ -82,17 +90,19 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         getSupportFragmentManager().beginTransaction().add(R.id.left_menu_ll, new LeftMenuFragment()).commit();
         mSlidingMenu.setSecondaryMenu(R.layout.container_right_menu);
         getSupportFragmentManager().beginTransaction().add(R.id.right_menu_ll, new RightMenuFragment()).commit();
-        mSubscription = RxBus.getInstance().toObservable(Event.class).subscribe(new Action1<Event>() {
+
+        RxBus.get().toObservable(Event.class).subscribe(new Consumer<Event>() {
             @Override
-            public void call(Event event) {
+            public void accept(Event event) throws Exception {
                 mSlidingMenu.showContent();
             }
         });
     }
 
+
     private void initViewPager() {
         mPagerAdapter = new VerticalPagerAdapter(getSupportFragmentManager());
-        DaggerMainComponent.builder()
+        DaggereMainComponent.builder()
                 .mainModule(new MainModule(this))
                 .netComponent(WeReadApplication.get(this).getNetComponent())
                 .build()
@@ -158,6 +168,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     public void refreshMainList(List<CategoryListEntity.DatasBean> items) {
+        Logger.d("items" + items);
         mPage++;
         mPagerAdapter.setDataList(items);
     }
@@ -167,7 +178,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mPresenter.getListByPage(page, mode, pageId, mDeviceId, createTime);
     }
 
-    private void getDeviceId() {
+    @NeedsPermission(Manifest.permission.READ_PHONE_STATE)
+    public void getDeviceId() {
         mDeviceId = AppUtils.getDeviceId(this);
     }
 
@@ -197,11 +209,17 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         }
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
-        }
+
     }
+
 }

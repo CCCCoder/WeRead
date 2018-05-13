@@ -11,6 +11,8 @@ import com.n1njac.weread.model.api.ApiService;
 import com.n1njac.weread.model.entity.CategoryListEntity;
 import com.n1njac.weread.utils.TimeUtils;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -22,7 +24,7 @@ public class MainPresenter implements MainContract.Presenter {
     private ApiService mApiService;
     private MainContract.View mView;
 
-
+    @Inject
     public MainPresenter(ApiService mApiService, MainContract.View mView) {
         this.mApiService = mApiService;
         this.mView = mView;

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#ff313131</color>
+    <color name="colorPrimaryDark">#ff030303</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="color_white">#fff</color>
     <color name="color_theme_bg">#fff8f7f5</color>
 
     <color name="color_line">#ffcead53</color>
-
+    <color name="white">#ffffffff</color>
     <color name="color_page_fragment__cus">#ff000000</color>
     <color name="color_page_fragment__text_common">#ff000000</color>
     <color name="color_page_fragment_view_line_bg_common">#ffc0c0c0</color>
+    <color name="item_column_page_textcolor_author">#ff9b9b9b</color>
 </resources>
