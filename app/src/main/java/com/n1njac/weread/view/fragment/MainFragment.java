@@ -1,7 +1,7 @@
 package com.n1njac.weread.view.fragment;
-/*    
+/*
  *    Created by N1njaC on 2018/5/6.
- *    email:aiai173cc@gmail.com 
+ *    email:aiai173cc@gmail.com
  */
 
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,9 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class MainFragment extends Fragment {
+
+    public static final String TAG = MainFragment.class.getSimpleName();
+
     @BindView(R.id.main_advertise_iv)
     ImageView mainAdvertiseIv;
     @BindView(R.id.main_pic_iv)
@@ -144,7 +148,10 @@ public class MainFragment extends Fragment {
 
     private void mainPageClick() {
         if (mDatasBean != null) {
-            DetailActivity.startDetailAty(getActivity(), mDatasBean);
+            String model = mDatasBean.getModel();
+            String id = mDatasBean.getId();
+            Log.d(TAG, "model:" + model + " id:" + id);
+            DetailActivity.startDetailAty(getActivity(), Integer.parseInt(model), id);
         }
     }
 

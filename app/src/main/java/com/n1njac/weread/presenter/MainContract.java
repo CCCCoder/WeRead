@@ -15,7 +15,6 @@ public interface MainContract {
 
         void getRecommend(String deviceId);
     }
-
     interface View {
         void showLoading();
 

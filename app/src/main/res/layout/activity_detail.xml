@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
+        android:id="@+id/detail_osv"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -25,12 +26,12 @@
                     android:scaleType="centerCrop" />
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/detail_type_listen_ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:id="@+id/layout_progress"
@@ -141,23 +142,16 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/item_column_page_textcolor_author" />
 
-            <LinearLayout
-                android:id="@+id/news_parse_web_ll"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/detail_content_tv"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10.0dip"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:visibility="visible" />
-
-            <WebView
-                android:id="@+id/content_wv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:text="林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P"
+                android:textColor="@color/color_page_fragment__cus"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -169,7 +163,8 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/colorPrimary"
-        android:visibility="gone">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <LinearLayout
             android:layout_width="match_parent"
