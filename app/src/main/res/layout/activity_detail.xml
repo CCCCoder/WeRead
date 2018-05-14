@@ -142,16 +142,14 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/item_column_page_textcolor_author" />
 
-            <TextView
-                android:id="@+id/detail_content_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:text="林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P"
-                android:textColor="@color/color_page_fragment__cus"
-                android:textSize="15sp" />
+
+            <FrameLayout
+                android:id="@+id/detail_wv_container_fl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+            </FrameLayout>
 
         </LinearLayout>
 

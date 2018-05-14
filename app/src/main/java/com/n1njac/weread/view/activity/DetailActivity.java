@@ -14,6 +14,10 @@ import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -64,17 +68,17 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
     TextView detailLeaderTv;
     @BindView(R.id.detail_osv)
     ObservableScrollView detailOsv;
-    @BindView(R.id.detail_content_tv)
-    TextView detailContentTv;
     @BindView(R.id.detail_tb)
     Toolbar detailTb;
+    @BindView(R.id.detail_wv_container_fl)
+    FrameLayout detailWvContainerFl;
+
     @Inject
     DetailPresenter mDetailPresenter;
-
-
     private String mItemId;
     private int mModel;
     private float mParallaxImageHeight;
+    private WebView mWebView;
 
     public static void startDetailAty(Context this$, int model, String itemId) {
         Intent i = new Intent(this$, DetailActivity.class);
@@ -119,6 +123,18 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
     private void initView() {
         initToolBar();
         detailOsv.setScrollViewCallbacks(this);
+        mWebView = new WebView(getApplicationContext());
+        detailWvContainerFl.addView(mWebView);
+
+        //声明WebSettings子类
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
+        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //关闭webview中缓存
+        webSettings.setAllowFileAccess(true); //设置可以访问文件
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
+        webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
+        webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
     }
 
     private void initToolBar() {
@@ -188,11 +204,25 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         detailTitleTv.setText(detailEntity.getDatas().getTitle());
         detailAuthorTv.setText(detailEntity.getDatas().getAuthor());
         detailLeaderTv.setText(Html.fromHtml(detailEntity.getDatas().getLead()));
-        detailContentTv.setText(Html.fromHtml(detailEntity.getDatas().getContent()));
+
+
     }
 
     @Override
     public void showOnFailure() {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mWebView != null) {
+            mWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+            mWebView.clearHistory();
+
+            ((ViewGroup) mWebView.getParent()).removeView(mWebView);
+            mWebView.destroy();
+            mWebView = null;
+        }
+        super.onDestroy();
     }
 }
