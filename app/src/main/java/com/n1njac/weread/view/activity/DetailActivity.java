@@ -34,6 +34,7 @@ import com.n1njac.weread.di.modules.DetailModule;
 import com.n1njac.weread.model.entity.DetailEntity;
 import com.n1njac.weread.presenter.DetailContract;
 import com.n1njac.weread.presenter.DetailPresenter;
+import com.n1njac.weread.utils.AnalysisHTML;
 import com.n1njac.weread.utils.KeyUtilsKt;
 
 import javax.inject.Inject;
@@ -71,7 +72,7 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
     @BindView(R.id.detail_tb)
     Toolbar detailTb;
     @BindView(R.id.detail_wv_container_fl)
-    FrameLayout detailWvContainerFl;
+    LinearLayout detailWvContainerFl;
 
     @Inject
     DetailPresenter mDetailPresenter;
@@ -204,7 +205,11 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         detailTitleTv.setText(detailEntity.getDatas().getTitle());
         detailAuthorTv.setText(detailEntity.getDatas().getAuthor());
         detailLeaderTv.setText(Html.fromHtml(detailEntity.getDatas().getLead()));
-
+        if (detailEntity.getDatas().getParseXML() == 1){
+            int i = detailEntity.getDatas().getLead().trim().length();
+            AnalysisHTML analysisHTML = new AnalysisHTML();
+            analysisHTML.loadHtml(this, detailEntity.getDatas().getContent(), analysisHTML.HTML_STRING, detailWvContainerFl, i);
+        }
 
     }
 

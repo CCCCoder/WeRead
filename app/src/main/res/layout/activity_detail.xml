@@ -143,13 +143,18 @@
                 android:background="@color/item_column_page_textcolor_author" />
 
 
-            <FrameLayout
+            <LinearLayout
                 android:id="@+id/detail_wv_container_fl"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
 
-            </FrameLayout>
+            </LinearLayout>
 
         </LinearLayout>
 

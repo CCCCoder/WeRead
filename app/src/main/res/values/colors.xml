@@ -13,4 +13,10 @@
     <color name="color_page_fragment__text_common">#ff000000</color>
     <color name="color_page_fragment_view_line_bg_common">#ffc0c0c0</color>
     <color name="item_column_page_textcolor_author">#ff9b9b9b</color>
+
+    <color name="red">#ff990000</color>
+    <color name="green">#ff009900</color>
+    <color name="blue">#ff000099</color>
+    <color name="black">#ff000000</color>
+    <color name="primary">#ff212324</color>
 </resources>
