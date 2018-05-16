@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/read_bg">
 
     <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
         android:id="@+id/detail_osv"
-        android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,11 +21,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/parallax_image_height">
 
-                <ImageView
-                    android:id="@+id/detail_content_iv"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop" />
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/detail_content_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="227dp"
+                        android:scaleType="centerCrop" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.6dp"
+                        android:background="@color/color_line" />
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/detail_type_listen_ll"
@@ -80,9 +93,9 @@
             </FrameLayout>
 
             <RelativeLayout
-                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:gravity="center">
 
                 <TextView
@@ -94,11 +107,11 @@
                     android:textColor="@color/color_line" />
 
                 <TextView
-                    android:layout_marginEnd="8dp"
                     android:id="@+id/detail_date_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="15dp"
                     android:text="2018/05/07"
                     android:textColor="@color/color_page_fragment__cus" />
@@ -109,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="28dp"
                 android:text="忧伤的嫖客"
                 android:textColor="@color/color_page_fragment__cus"
                 android:textSize="24sp"
@@ -120,20 +133,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="28dp"
                 android:text="林阿P"
                 android:textColor="@color/color_page_fragment__cus"
                 android:textSize="11sp"
                 tools:ignore="SmallSp" />
 
             <TextView
-                android:lineSpacingExtra="3dp"
                 android:id="@+id/detail_leader_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="28dp"
+                android:lineSpacingExtra="12dp"
                 android:textColor="@color/color_page_fragment__cus"
                 android:textSize="15sp" />
 
@@ -163,42 +176,63 @@
 
     </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
 
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/detail_tb"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/detail_tb"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical|end"
-            android:orientation="horizontal"
-            tools:ignore="ContentDescription">
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/favorite_normal" />
+                android:gravity="center_vertical|end"
+                android:orientation="horizontal"
+                tools:ignore="ContentDescription">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:src="@mipmap/write" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/favorite_normal" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="20dp"
-                android:src="@mipmap/share" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:src="@mipmap/write" />
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="20dp"
+                    android:src="@mipmap/share" />
 
-    </android.support.v7.widget.Toolbar>
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+        <View
+            android:visibility="gone"
+            android:id="@+id/tool_bar_line_view"
+            android:layout_width="match_parent"
+            android:layout_height="1.6dp"
+            android:background="@color/color_line" />
+    </LinearLayout>
+
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/loading_avl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:indicatorColor="@color/color_line"
+        app:indicatorName="BallTrianglePathIndicator" />
 
 </FrameLayout>

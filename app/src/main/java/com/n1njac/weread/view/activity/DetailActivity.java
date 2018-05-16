@@ -15,12 +15,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -37,6 +36,7 @@ import com.n1njac.weread.presenter.DetailPresenter;
 import com.n1njac.weread.utils.AnalysisHTML;
 import com.n1njac.weread.utils.KeyUtilsKt;
 import com.orhanobut.logger.Logger;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import javax.inject.Inject;
 
@@ -74,9 +74,15 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
     Toolbar detailTb;
     @BindView(R.id.detail_wv_container_fl)
     LinearLayout detailWvContainerFl;
+    @BindView(R.id.loading_avl)
+    AVLoadingIndicatorView loadingAvl;
+    @BindView(R.id.tool_bar_line_view)
+    View toolBarLineView;
 
     @Inject
     DetailPresenter mDetailPresenter;
+
+
     private String mItemId;
     private int mModel;
     private float mParallaxImageHeight;
@@ -129,6 +135,22 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         mWebView = new WebView(getApplicationContext());
         detailWvContainerFl.addView(mWebView);
 
+        setTypeText();
+    }
+
+    private void setTypeText() {
+        switch (mModel) {
+            case 2:
+                //视频
+                detailTypeTv.setText("视 频");
+                break;
+            case 3:
+                detailTypeTv.setText("音 频");
+                break;
+            default:
+                detailTypeTv.setText("文 字");
+                break;
+        }
     }
 
     private void initToolBar() {
@@ -177,6 +199,11 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         int baseColor = getResources().getColor(R.color.colorPrimary);
         float alpha = Math.min(1, (float) scrollY / (mParallaxImageHeight - mActionBarHeight));
         detailTb.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
+        if (alpha == 1){
+            toolBarLineView.setVisibility(View.VISIBLE);
+        }else {
+            toolBarLineView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -191,12 +218,12 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
 
     @Override
     public void showLoading() {
-
+        loadingAvl.show();
     }
 
     @Override
     public void dismissLoading() {
-
+        loadingAvl.hide();
     }
 
     @Override
@@ -215,7 +242,8 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
 
     @Override
     public void showOnFailure() {
-
+        loadingAvl.hide();
+        Toast.makeText(this, "加载失败，请重试", Toast.LENGTH_SHORT).show();
     }
 
     @Override

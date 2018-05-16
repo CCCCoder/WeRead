@@ -64,6 +64,9 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     private VerticalPagerAdapter mPagerAdapter;
     private String mDeviceId;
 
+    private LeftMenuFragment mLeftMenuFragment;
+    private RightMenuFragment mRightMenuFragment;
+
     @Inject
     MainPresenter mPresenter;
     private int mPage = 1;
@@ -101,9 +104,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mSlidingMenu.setFadeEnabled(true);
         mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
         mSlidingMenu.setMenu(R.layout.container_left_menu);
-        getSupportFragmentManager().beginTransaction().add(R.id.left_menu_ll, new LeftMenuFragment()).commit();
+        mLeftMenuFragment = new LeftMenuFragment();
+        mRightMenuFragment = new RightMenuFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.left_menu_ll, mLeftMenuFragment).commit();
         mSlidingMenu.setSecondaryMenu(R.layout.container_right_menu);
-        getSupportFragmentManager().beginTransaction().add(R.id.right_menu_ll, new RightMenuFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.right_menu_ll, mRightMenuFragment).commit();
 
         RxBus.get().toObservable(Event.class).subscribe(new Consumer<Event>() {
             @Override
@@ -204,6 +209,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         switch (view.getId()) {
             case R.id.go_to_column_iv:
                 mSlidingMenu.showMenu();
+                mLeftMenuFragment.startColumnAnim();
                 break;
             case R.id.go_to_person_iv:
                 mSlidingMenu.showSecondaryMenu();

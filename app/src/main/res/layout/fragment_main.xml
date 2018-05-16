@@ -63,6 +63,8 @@
                 android:background="@color/color_line" />
 
             <TextView
+
+                android:letterSpacing="0.5"
                 android:id="@+id/main_type_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -80,6 +82,7 @@
         </RelativeLayout>
 
         <TextView
+            android:gravity="center"
             android:id="@+id/main_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,6 +98,7 @@
             android:textSize="37sp" />
 
         <TextView
+            android:gravity="center"
             android:id="@+id/main_content_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

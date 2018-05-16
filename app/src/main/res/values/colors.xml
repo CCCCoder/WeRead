@@ -8,6 +8,7 @@
     <color name="color_theme_bg">#fff8f7f5</color>
 
     <color name="color_line">#ffcead53</color>
+    <color name="color_line_2">#ff676767</color>
     <color name="white">#ffffffff</color>
     <color name="color_page_fragment__cus">#ff000000</color>
     <color name="color_page_fragment__text_common">#ff000000</color>
@@ -19,4 +20,8 @@
     <color name="blue">#ff000099</color>
     <color name="black">#ff000000</color>
     <color name="primary">#ff212324</color>
+
+    <color name="read_bg">#fff8f7f5</color>
+    <color name="theme_bg_black">#313131</color>
+    <color name="color_text_2">#ff888888</color>
 </resources>

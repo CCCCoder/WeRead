@@ -2,4 +2,16 @@
     <string name="app_name">WeRead</string>
     <string name="str_main_topbar">单 读</string>
     <string name="str_advertise">广告</string>
+
+    <string name="str_type_read">TO READ</string>
+    <string name="str_type_listen">TO LISTEN</string>
+    <string name="str_type_watch">TO WATCH</string>
+    <string name="str_home_page">首 页</string>
+    <string name="str_words">文 字</string>
+    <string name="str_voice">声 音</string>
+    <string name="str_video">影 像</string>
+    <string name="str_calendar">单向历</string>
+    <string name="str_power_text">Powered by N1njaC</string>
+
+
 </resources>

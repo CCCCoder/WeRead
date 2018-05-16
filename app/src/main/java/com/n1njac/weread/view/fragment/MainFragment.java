@@ -106,16 +106,19 @@ public class MainFragment extends Fragment {
             switch (model) {
                 case 2:
                     //视频
+                    mainTypeTv.setText(R.string.str_type_watch);
                     contentTypeIv.setVisibility(View.VISIBLE);
                     downloadIv.setVisibility(View.GONE);
                     contentTypeIv.setImageResource(R.mipmap.library_video_play_symbol);
                     break;
                 case 3:
+                    mainTypeTv.setText(R.string.str_type_listen);
                     contentTypeIv.setVisibility(View.VISIBLE);
                     downloadIv.setVisibility(View.VISIBLE);
                     contentTypeIv.setImageResource(R.mipmap.library_voice_play_symbol);
                     break;
                 default:
+                    mainTypeTv.setText(R.string.str_type_read);
                     contentTypeIv.setVisibility(View.GONE);
                     downloadIv.setVisibility(View.GONE);
                     break;

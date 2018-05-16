@@ -41,6 +41,7 @@ public class DetailPresenter implements DetailContract.Presenter {
                     @Override
                     public void onSubscribe(Disposable d) {
                         Log.i(TAG, "onSubscribe");
+                        mDetailView.showLoading();
                     }
 
                     @Override
@@ -53,11 +54,13 @@ public class DetailPresenter implements DetailContract.Presenter {
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         Log.i(TAG, "onError e:" + e.getMessage());
+                        mDetailView.showOnFailure();
                     }
 
                     @Override
                     public void onComplete() {
                         Log.i(TAG, "onComplete");
+                        mDetailView.dismissLoading();
                     }
                 });
     }
