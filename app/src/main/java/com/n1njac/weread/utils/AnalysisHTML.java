@@ -79,31 +79,41 @@ public class AnalysisHTML {
         String str1 = paramElement.text().replaceAll("br;", "\n");
         if (!TextUtils.isEmpty(str1)) {
             ssb = new SpannableStringBuilder("\n" + str1);
-            if (paramElement.nodeName().equals("h1")) {
-                viewType = 1;
-            } else if (paramElement.nodeName().equals("h2")) {
-                viewType = 2;
-            } else if (paramElement.nodeName().equals("h3")) {
-                viewType = 3;
-            } else if (paramElement.nodeName().equals("h4")) {
-                viewType = 4;
-            } else if (paramElement.nodeName().equals("h5")) {
-                viewType = 5;
-            } else if (paramElement.nodeName().equals("h6")) {
-                viewType = 6;
-            } else if (paramElement.nodeName().equals("block")) {
-                viewType = 7;
-            } else if (paramElement.nodeName().equals("poetry")) {
-                viewType = 8;
-            } else if (paramElement.nodeName().equals("hr")) {
-                this.viewType = 10;
-            } else {
-                viewType = 0;
-                if (paramElement.nodeName().contains("strong")) {
-                    viewType = 11;
-                }
-                ssb = new SpannableStringBuilder("\n" + setFirstLineSpace(str1, 2));
-
+            switch (paramElement.nodeName()) {
+                case "h1":
+                    viewType = 1;
+                    break;
+                case "h2":
+                    viewType = 2;
+                    break;
+                case "h3":
+                    viewType = 3;
+                    break;
+                case "h4":
+                    viewType = 4;
+                    break;
+                case "h5":
+                    viewType = 5;
+                    break;
+                case "h6":
+                    viewType = 6;
+                    break;
+                case "block":
+                    viewType = 7;
+                    break;
+                case "poetry":
+                    viewType = 8;
+                    break;
+                case "hr":
+                    this.viewType = 10;
+                    break;
+                default:
+                    viewType = 0;
+                    if (paramElement.nodeName().contains("strong")) {
+                        viewType = 11;
+                    }
+                    ssb = new SpannableStringBuilder("\n" + setFirstLineSpace(str1, 2));
+                    break;
             }
             paintViewUtil.addTypeView(context, this.fuView, this.viewType, ssb, null, null, null, this.wordsLength, 4 * space);
         }

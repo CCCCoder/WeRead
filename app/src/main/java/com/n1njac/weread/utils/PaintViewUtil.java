@@ -69,7 +69,7 @@ public class PaintViewUtil {
         this.ntv = new SelectTextView(paramContext);
         this.ntv.setSingleLine(false);
         ntv.setTextIsSelectable(true);
-        ntv.setTextColor(paramContext.getResources().getColor(R.color.green));
+        ntv.setTextColor(paramContext.getResources().getColor(R.color.color_line));
         ntv.setTextSize(10);
         setFont(ntv);
         putTextSpanViewSettings(this.ntv, paramSpannableStringBuilder, paramInt1, paramInt2, paramInt3);

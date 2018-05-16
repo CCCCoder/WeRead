@@ -36,6 +36,7 @@ import com.n1njac.weread.presenter.DetailContract;
 import com.n1njac.weread.presenter.DetailPresenter;
 import com.n1njac.weread.utils.AnalysisHTML;
 import com.n1njac.weread.utils.KeyUtilsKt;
+import com.orhanobut.logger.Logger;
 
 import javax.inject.Inject;
 
@@ -80,6 +81,7 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
     private int mModel;
     private float mParallaxImageHeight;
     private WebView mWebView;
+    int mActionBarHeight;
 
     public static void startDetailAty(Context this$, int model, String itemId) {
         Intent i = new Intent(this$, DetailActivity.class);
@@ -127,15 +129,6 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         mWebView = new WebView(getApplicationContext());
         detailWvContainerFl.addView(mWebView);
 
-        //声明WebSettings子类
-        WebSettings webSettings = mWebView.getSettings();
-        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
-        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
-        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //关闭webview中缓存
-        webSettings.setAllowFileAccess(true); //设置可以访问文件
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
-        webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
-        webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
     }
 
     private void initToolBar() {
@@ -143,6 +136,7 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+
         detailTb.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.colorPrimary)));
         detailTb.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +148,13 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
 
     private void loadData() {
         mDetailPresenter.getDetailData(mItemId);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        mActionBarHeight = getSupportActionBar().getHeight();
+        Logger.d("action bar height:" + mActionBarHeight);
     }
 
     @OnClick({R.id.seek_bar_sb, R.id.detail_play_ic})
@@ -174,7 +175,7 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
         int baseColor = getResources().getColor(R.color.colorPrimary);
-        float alpha = Math.min(1, (float) scrollY / mParallaxImageHeight);
+        float alpha = Math.min(1, (float) scrollY / (mParallaxImageHeight - mActionBarHeight));
         detailTb.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
     }
 
@@ -205,12 +206,11 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         detailTitleTv.setText(detailEntity.getDatas().getTitle());
         detailAuthorTv.setText(detailEntity.getDatas().getAuthor());
         detailLeaderTv.setText(Html.fromHtml(detailEntity.getDatas().getLead()));
-        if (detailEntity.getDatas().getParseXML() == 1){
+        if (detailEntity.getDatas().getParseXML() == 1) {
             int i = detailEntity.getDatas().getLead().trim().length();
             AnalysisHTML analysisHTML = new AnalysisHTML();
             analysisHTML.loadHtml(this, detailEntity.getDatas().getContent(), analysisHTML.HTML_STRING, detailWvContainerFl, i);
         }
-
     }
 
     @Override

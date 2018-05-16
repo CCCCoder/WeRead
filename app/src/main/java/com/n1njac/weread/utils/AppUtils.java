@@ -10,6 +10,8 @@ import android.view.WindowManager;
 
 import com.orhanobut.logger.Logger;
 
+import retrofit2.http.PUT;
+
 public class AppUtils {
     public static String getDeviceId(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -30,4 +32,5 @@ public class AppUtils {
     public static WindowManager getWindowManager(Context paramContext) {
         return (WindowManager) paramContext.getSystemService(Context.WINDOW_SERVICE);
     }
+
 }

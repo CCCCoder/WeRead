@@ -7,6 +7,7 @@
 
     <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
         android:id="@+id/detail_osv"
+        android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -79,6 +80,7 @@
             </FrameLayout>
 
             <RelativeLayout
+                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center">
@@ -92,6 +94,7 @@
                     android:textColor="@color/color_line" />
 
                 <TextView
+                    android:layout_marginEnd="8dp"
                     android:id="@+id/detail_date_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -124,13 +127,13 @@
                 tools:ignore="SmallSp" />
 
             <TextView
+                android:lineSpacingExtra="3dp"
                 android:id="@+id/detail_leader_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:text="林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P林阿P"
                 android:textColor="@color/color_page_fragment__cus"
                 android:textSize="15sp" />
 
