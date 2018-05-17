@@ -209,7 +209,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         switch (view.getId()) {
             case R.id.go_to_column_iv:
                 mSlidingMenu.showMenu();
-                mLeftMenuFragment.startColumnAnim();
+                mLeftMenuFragment.startAnim();
                 break;
             case R.id.go_to_person_iv:
                 mSlidingMenu.showSecondaryMenu();
@@ -231,7 +231,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         }
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -242,5 +241,4 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     protected void onDestroy() {
         super.onDestroy();
     }
-
 }

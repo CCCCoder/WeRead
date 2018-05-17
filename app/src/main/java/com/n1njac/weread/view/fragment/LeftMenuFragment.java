@@ -4,17 +4,24 @@ package com.n1njac.weread.view.fragment;
  *    email:aiai173cc@gmail.com
  */
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationSet;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.n1njac.weread.R;
+import com.n1njac.weread.model.entity.Event;
+import com.n1njac.weread.utils.RxBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +56,6 @@ public class LeftMenuFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_left_menu, container, false);
         unbinder = ButterKnife.bind(this, view);
         addView();
-
         return view;
     }
 
@@ -62,8 +68,19 @@ public class LeftMenuFragment extends Fragment {
         mAnimViews.add(calendarTv);
     }
 
-    public void startColumnAnim() {
+    public void startAnim() {
+        startColumnAnim();
+        startIconAnim(searchIv);
+        startIconAnim(rightSlideCloseIv);
+    }
 
+    private void startIconAnim(View view) {
+        ScaleAnimation animation = new ScaleAnimation(0.1F, 1.0F, 0.1F, 1.0F, view.getWidth() / 2, view.getHeight() / 2);
+        animation.setDuration(1000L);
+        view.startAnimation(animation);
+    }
+
+    public void startColumnAnim() {
         for (int i = 1; i < mAnimViews.size(); i++) {
             View view = mAnimViews.get(i);
             TranslateAnimation animation = new TranslateAnimation(i * -35, 0, 0, 0);
@@ -71,6 +88,7 @@ public class LeftMenuFragment extends Fragment {
             view.startAnimation(animation);
         }
     }
+
 
     @Override
     public void onDestroyView() {
@@ -82,8 +100,10 @@ public class LeftMenuFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.right_slide_close_iv:
+                RxBus.get().post(new Event());
                 break;
             case R.id.search_iv:
+                RxBus.get().post(new Event());
                 break;
             case R.id.home_page_tv:
                 break;
