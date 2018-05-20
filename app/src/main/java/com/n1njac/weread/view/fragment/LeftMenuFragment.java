@@ -84,7 +84,7 @@ public class LeftMenuFragment extends Fragment {
         for (int i = 1; i < mAnimViews.size(); i++) {
             View view = mAnimViews.get(i);
             TranslateAnimation animation = new TranslateAnimation(i * -35, 0, 0, 0);
-            animation.setDuration(700L);
+            animation.setDuration(900L);
             view.startAnimation(animation);
         }
     }
@@ -106,6 +106,7 @@ public class LeftMenuFragment extends Fragment {
                 RxBus.get().post(new Event());
                 break;
             case R.id.home_page_tv:
+                RxBus.get().post(new Event());
                 break;
             case R.id.words_tv:
                 break;

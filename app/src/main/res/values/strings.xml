@@ -12,6 +12,11 @@
     <string name="str_video">影 像</string>
     <string name="str_calendar">单向历</string>
     <string name="str_power_text">Powered by N1njaC</string>
+    <string name="str_msg">消息</string>
+    <string name="str_star">收藏</string>
+    <string name="str_offline">离线</string>
+    <string name="str_note">笔记</string>
+    <string name="str_version_default">v1.2</string>
 
 
 </resources>

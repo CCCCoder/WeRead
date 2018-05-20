@@ -84,9 +84,11 @@
 
                     <android.support.v7.widget.AppCompatImageView
                         android:id="@+id/detail_play_ic"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
                         app:srcCompat="@drawable/ic_play" />
                 </LinearLayout>
 
@@ -219,11 +221,11 @@
         </android.support.v7.widget.Toolbar>
 
         <View
-            android:visibility="gone"
             android:id="@+id/tool_bar_line_view"
             android:layout_width="match_parent"
             android:layout_height="1.6dp"
-            android:background="@color/color_line" />
+            android:background="@color/color_line"
+            android:visibility="gone" />
     </LinearLayout>
 
 

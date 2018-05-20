@@ -213,6 +213,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                 break;
             case R.id.go_to_person_iv:
                 mSlidingMenu.showSecondaryMenu();
+                mRightMenuFragment.startAnim();
                 break;
         }
     }

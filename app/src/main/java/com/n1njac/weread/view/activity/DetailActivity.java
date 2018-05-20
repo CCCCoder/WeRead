@@ -81,7 +81,8 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
 
     @Inject
     DetailPresenter mDetailPresenter;
-
+    private boolean isPlaying = false;
+    private DetailEntity mDetailEntity;
 
     private String mItemId;
     private int mModel;
@@ -134,7 +135,6 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         detailOsv.setScrollViewCallbacks(this);
         mWebView = new WebView(getApplicationContext());
         detailWvContainerFl.addView(mWebView);
-
         setTypeText();
     }
 
@@ -146,6 +146,7 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
                 break;
             case 3:
                 detailTypeTv.setText("音 频");
+                detailTypeListenLl.setVisibility(View.VISIBLE);
                 break;
             default:
                 detailTypeTv.setText("文 字");
@@ -185,7 +186,21 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
             case R.id.seek_bar_sb:
                 break;
             case R.id.detail_play_ic:
+                togglePlayAction();
                 break;
+        }
+    }
+
+    private void togglePlayAction() {
+        if (mDetailEntity == null) return;
+        if (isPlaying) {
+            isPlaying = false;
+            GlideApp.with(this).load(R.drawable.ic_play).into(detailPlayIc);
+
+
+        } else {
+            isPlaying = true;
+            GlideApp.with(this).load(R.drawable.ic_pause).into(detailPlayIc);
         }
     }
 
@@ -199,9 +214,9 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         int baseColor = getResources().getColor(R.color.colorPrimary);
         float alpha = Math.min(1, (float) scrollY / (mParallaxImageHeight - mActionBarHeight));
         detailTb.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
-        if (alpha == 1){
+        if (alpha == 1) {
             toolBarLineView.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             toolBarLineView.setVisibility(View.GONE);
         }
     }
@@ -228,6 +243,7 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
 
     @Override
     public void freshListUI(DetailEntity detailEntity) {
+        mDetailEntity = detailEntity;
         GlideApp.with(this).load(detailEntity.getDatas().getThumbnail()).centerCrop().into(detailContentIv);
         detailDateTv.setText(detailEntity.getDatas().getUpdate_time());
         detailTitleTv.setText(detailEntity.getDatas().getTitle());

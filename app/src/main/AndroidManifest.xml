@@ -24,6 +24,8 @@
         <activity
             android:name=".view.activity.DetailActivity"
             android:screenOrientation="portrait" />
+
+        <service android:name=".player.PlayerHelper"/>
     </application>
 
 </manifest>

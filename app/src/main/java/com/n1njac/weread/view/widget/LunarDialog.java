@@ -14,7 +14,7 @@ import com.n1njac.weread.R;
 public class LunarDialog extends Dialog {
     public LunarDialog(@NonNull Context context) {
         super(context, R.style.LunarDialog);
-        setCanceledOnTouchOutside(false);
+        setCanceledOnTouchOutside(true);
     }
 
 }
