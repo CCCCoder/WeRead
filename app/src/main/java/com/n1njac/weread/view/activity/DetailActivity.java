@@ -4,9 +4,15 @@ package com.n1njac.weread.view.activity;
  *    email:aiai173cc@gmail.com
  */
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.AppCompatImageView;
@@ -18,6 +24,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +38,19 @@ import com.n1njac.weread.app.WeReadApplication;
 import com.n1njac.weread.di.components.DaggerDetailComponent;
 import com.n1njac.weread.di.modules.DetailModule;
 import com.n1njac.weread.model.entity.DetailEntity;
+import com.n1njac.weread.player.IPlayback;
+import com.n1njac.weread.player.PlayState;
+import com.n1njac.weread.player.PlayerHelper;
 import com.n1njac.weread.presenter.DetailContract;
 import com.n1njac.weread.presenter.DetailPresenter;
 import com.n1njac.weread.utils.AnalysisHTML;
 import com.n1njac.weread.utils.KeyUtilsKt;
+import com.n1njac.weread.utils.TimeUtils;
 import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -44,7 +58,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DetailActivity extends BaseActivity implements ObservableScrollViewCallbacks, DetailContract.View {
+public class DetailActivity extends BaseActivity implements ObservableScrollViewCallbacks, DetailContract.View, IPlayback.Callback {
 
     @BindView(R.id.detail_content_iv)
     ImageView detailContentIv;
@@ -89,6 +103,9 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
     private float mParallaxImageHeight;
     private WebView mWebView;
     int mActionBarHeight;
+    private PlayerHelper mPlayerHelper;
+    private String mCurrentFm;
+    private Timer mTimer;
 
     public static void startDetailAty(Context this$, int model, String itemId) {
         Intent i = new Intent(this$, DetailActivity.class);
@@ -97,6 +114,28 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         this$.startActivity(i);
     }
 
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mPlayerHelper = ((PlayerHelper.PlayerBinder) service).getHelper();
+            register();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+            unRegister();
+            mPlayerHelper = null;
+        }
+    };
+
+    private void register() {
+        mPlayerHelper.registerCallback(this);
+    }
+
+    private void unRegister() {
+        mPlayerHelper.unregisterCallback(this);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,6 +146,11 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         initVar();
         initView();
         loadData();
+        bindPlayService();
+    }
+
+    private void bindPlayService() {
+        bindService(new Intent(this, PlayerHelper.class), connection, Context.BIND_AUTO_CREATE);
     }
 
 
@@ -136,6 +180,27 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         mWebView = new WebView(getApplicationContext());
         detailWvContainerFl.addView(mWebView);
         setTypeText();
+        setSeekBar();
+    }
+
+    private void setSeekBar() {
+        seekBarSb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                cancelTimer();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mPlayerHelper.seekTo(seekBar.getProgress());
+                startTimer();
+            }
+        });
     }
 
     private void setTypeText() {
@@ -192,15 +257,22 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
     }
 
     private void togglePlayAction() {
-        if (mDetailEntity == null) return;
+        if (mDetailEntity == null || mPlayerHelper == null) return;
         if (isPlaying) {
             isPlaying = false;
             GlideApp.with(this).load(R.drawable.ic_play).into(detailPlayIc);
 
+            if (mPlayerHelper.isPlaying()) mPlayerHelper.pause();
 
         } else {
             isPlaying = true;
             GlideApp.with(this).load(R.drawable.ic_pause).into(detailPlayIc);
+            if (mCurrentFm == null) return;
+            if (mCurrentFm.equals(mPlayerHelper.getUrl())) {
+                mPlayerHelper.resume();
+            } else {
+                mPlayerHelper.start(mCurrentFm);
+            }
         }
     }
 
@@ -244,6 +316,7 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
     @Override
     public void freshListUI(DetailEntity detailEntity) {
         mDetailEntity = detailEntity;
+        mCurrentFm = detailEntity.getDatas().getFm();
         GlideApp.with(this).load(detailEntity.getDatas().getThumbnail()).centerCrop().into(detailContentIv);
         detailDateTv.setText(detailEntity.getDatas().getUpdate_time());
         detailTitleTv.setText(detailEntity.getDatas().getTitle());
@@ -273,5 +346,82 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
             mWebView = null;
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onPlayStatusChanged(PlayState status) {
+
+        switch (status) {
+            case INIT:
+                break;
+            case PAUSE:
+                cancelTimer();
+                break;
+            case RESUME:
+
+                startTimer();
+                break;
+            case PLAYING:
+                updateDuration();
+                startTimer();
+                break;
+            case PREPARE:
+
+                break;
+            case COMPLETE:
+                cancelTimer();
+                break;
+            case ERROR:
+                cancelTimer();
+                durationTv.setText("0");
+                break;
+        }
+    }
+
+    public void startTimer() {
+        mTimer = new Timer();
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (mPlayerHelper == null) return;
+                if (mPlayerHelper.isPlaying()) {
+                    mHandler.post(runnable);
+                }
+            }
+        }, 0, 1000);
+    }
+
+    public void cancelTimer() {
+        if (mTimer != null) {
+            mTimer.cancel();
+        }
+        mTimer = null;
+
+    }
+
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            int progress = (int) (seekBarSb.getMax()
+                    * ((float) mPlayerHelper.getCurrentProgress() / (float) mPlayerHelper.getDuration()));
+            updateProgressText(progress);
+            if (progress >= 0 && progress <= seekBarSb.getMax()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    seekBarSb.setProgress(progress, true);
+                } else {
+                    seekBarSb.setProgress(progress);
+                }
+            }
+        }
+    };
+
+    private void updateProgressText(int progress) {
+        progressTv.setText(TimeUtils.parseDurationTime(progress));
+    }
+
+    private void updateDuration() {
+        durationTv.setText(TimeUtils.parseDurationTime(mPlayerHelper.getDuration()));
     }
 }

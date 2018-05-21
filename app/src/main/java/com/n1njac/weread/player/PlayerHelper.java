@@ -88,4 +88,9 @@ public class PlayerHelper extends Service implements IPlayback {
         mPlayer.unregisterCallback(callback);
     }
 
+    @Override
+    public String getUrl() {
+        return mPlayer.getUrl();
+    }
+
 }

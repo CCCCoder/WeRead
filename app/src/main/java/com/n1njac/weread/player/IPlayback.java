@@ -28,6 +28,8 @@ public interface IPlayback {
 
     void unregisterCallback(Callback callback);
 
+    String getUrl();
+
     public interface Callback {
         void onPlayStatusChanged(PlayState status);
     }

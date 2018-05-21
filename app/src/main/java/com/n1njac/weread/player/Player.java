@@ -15,6 +15,7 @@ public class Player implements IPlayback, MediaPlayer.OnPreparedListener, MediaP
     private MediaPlayer mMediaPlayer;
     private Callback mCallback;
     private boolean isPaused;
+    private String mCurrentUrl;
 
     private Player() {
         mMediaPlayer = new MediaPlayer();
@@ -36,6 +37,7 @@ public class Player implements IPlayback, MediaPlayer.OnPreparedListener, MediaP
     @Override
     public void start(String url) {
         try {
+            mCurrentUrl = url;
             notifyPlayStatusChanged(PlayState.INIT);
             mMediaPlayer.reset();
             mMediaPlayer.setDataSource(url);
@@ -44,7 +46,6 @@ public class Player implements IPlayback, MediaPlayer.OnPreparedListener, MediaP
             notifyPlayStatusChanged(PlayState.ERROR);
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -102,6 +103,11 @@ public class Player implements IPlayback, MediaPlayer.OnPreparedListener, MediaP
     @Override
     public void unregisterCallback(Callback callback) {
         this.mCallback = null;
+    }
+
+    @Override
+    public String getUrl() {
+        return mCurrentUrl;
     }
 
     @Override
