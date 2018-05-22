@@ -197,10 +197,18 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                mPlayerHelper.seekTo(seekBar.getProgress());
+                mPlayerHelper.seekTo(getSpecificDuration(seekBar.getProgress()));
                 startTimer();
             }
         });
+    }
+
+    private int getSpecificDuration(int progress) {
+        int totalDuration = 0;
+        if (mPlayerHelper != null) {
+            totalDuration = mPlayerHelper.getDuration();
+        }
+        return (int) (totalDuration * ((float) progress / seekBarSb.getMax()));
     }
 
     private void setTypeText() {
