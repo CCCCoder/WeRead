@@ -59,6 +59,11 @@ public class PlayerHelper extends Service implements IPlayback {
     }
 
     @Override
+    public void stop() {
+        mPlayer.stop();
+    }
+
+    @Override
     public boolean isPlaying() {
         return mPlayer.isPlaying();
     }

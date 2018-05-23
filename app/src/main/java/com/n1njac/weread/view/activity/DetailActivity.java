@@ -269,7 +269,6 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         if (isPlaying) {
             isPlaying = false;
             GlideApp.with(this).load(R.drawable.ic_play).into(detailPlayIc);
-
             if (mPlayerHelper.isPlaying()) mPlayerHelper.pause();
 
         } else {
@@ -344,6 +343,18 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+//        stopPlay();
+    }
+
+    private void stopPlay() {
+        if (mPlayerHelper != null && mPlayerHelper.isPlaying()) {
+            mPlayerHelper.stop();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         if (mWebView != null) {
             mWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
@@ -353,6 +364,7 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
             mWebView.destroy();
             mWebView = null;
         }
+        unbindService(connection);
         super.onDestroy();
     }
 
@@ -414,7 +426,7 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
         public void run() {
             int progress = (int) (seekBarSb.getMax()
                     * ((float) mPlayerHelper.getCurrentProgress() / (float) mPlayerHelper.getDuration()));
-            updateProgressText(progress);
+            updateProgressText(mPlayerHelper.getCurrentProgress());
             if (progress >= 0 && progress <= seekBarSb.getMax()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     seekBarSb.setProgress(progress, true);
@@ -426,7 +438,10 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
     };
 
     private void updateProgressText(int progress) {
-        progressTv.setText(TimeUtils.parseDurationTime(progress));
+
+        String time = TimeUtils.parseDurationTime(progress);
+        Logger.d(time);
+        progressTv.setText(time);
     }
 
     private void updateDuration() {

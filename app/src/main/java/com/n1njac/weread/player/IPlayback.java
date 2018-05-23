@@ -16,6 +16,8 @@ public interface IPlayback {
 
     public void release();
 
+    void stop();
+
     boolean isPlaying();
 
     int getDuration();

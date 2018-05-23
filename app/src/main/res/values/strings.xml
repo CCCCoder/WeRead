@@ -17,6 +17,7 @@
     <string name="str_offline">离线</string>
     <string name="str_note">笔记</string>
     <string name="str_version_default">v1.2</string>
+    <string name="_00_00">00:00</string>
 
 
 </resources>

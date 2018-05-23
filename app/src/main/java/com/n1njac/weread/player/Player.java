@@ -59,7 +59,7 @@ public class Player implements IPlayback, MediaPlayer.OnPreparedListener, MediaP
 
     @Override
     public boolean isPlaying() {
-        return mMediaPlayer.isPlaying();
+        return mMediaPlayer != null && mMediaPlayer.isPlaying();
     }
 
     @Override
@@ -93,6 +93,11 @@ public class Player implements IPlayback, MediaPlayer.OnPreparedListener, MediaP
         mMediaPlayer.release();
         mMediaPlayer = null;
         sInstance = null;
+    }
+
+    @Override
+    public void stop() {
+        mMediaPlayer.stop();
     }
 
     @Override
