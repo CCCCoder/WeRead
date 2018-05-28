@@ -24,6 +24,9 @@
         <activity
             android:name=".view.activity.DetailActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".view.activity.VideoDetailActivity"/>
 
         <service android:name=".player.PlayerHelper"/>
     </application>

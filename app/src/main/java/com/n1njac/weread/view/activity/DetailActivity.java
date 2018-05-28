@@ -438,7 +438,6 @@ public class DetailActivity extends BaseActivity implements ObservableScrollView
     };
 
     private void updateProgressText(int progress) {
-
         String time = TimeUtils.parseDurationTime(progress);
         Logger.d(time);
         progressTv.setText(time);
