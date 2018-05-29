@@ -12,14 +12,13 @@ import com.n1njac.weread.presenter.DetailContract
  */
 class VideoDetailActivity : BaseActivity(), DetailContract.View{
 
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_video)
     }
 
     override fun showLoading() {
-
     }
 
     override fun dismissLoading() {
